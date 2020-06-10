@@ -1,0 +1,12 @@
+div,li{
+    box-sizing: border-box;
+}
+.error{
+    color: red;
+}
+.correct{
+    color: green;
+}
+li{
+    list-style: none;
+}
