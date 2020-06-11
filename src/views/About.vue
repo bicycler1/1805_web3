@@ -21,9 +21,9 @@
     <div>
       <div>
         <div class="balance">
-          我的余额
+          我的PAB货币数
           <i class="iconfont icon-yue"></i>
-          {{tokenNum}}
+          &nbsp;&nbsp;&nbsp;&nbsp;{{tokenNum}}
         <div>
           <a-button type="primary" :loading="loading" @click="renewBalance">
             更新余额
@@ -133,6 +133,8 @@
   padding: 16px;
   background: azure;
   border-radius: 9px;
+  font-size: 1.1rem;
+  font-weight: bold;
   &>div{
     margin: 9px 0 0 0;
   }
