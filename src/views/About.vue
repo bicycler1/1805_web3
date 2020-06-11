@@ -97,7 +97,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background: url(../assets/index/bk.png);
+  background: url(../assets/index/bk.jpg);
   background-size: cover;
   width: 100vw;
   height: 100vh;

@@ -166,7 +166,7 @@ $top_height: 11%;
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: url(../assets/index/bk.png);
+  background: url(../assets/index/bk.jpg);
   background-size: cover;
   &>div:nth-child(3){
   position: absolute;
@@ -206,7 +206,7 @@ $top_height: 11%;
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: url(../assets/index/bk.png);
+  background: url(../assets/index/bk.jpg);
   background-size: cover;
 }
 .top-blur{
