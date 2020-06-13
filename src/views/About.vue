@@ -21,9 +21,9 @@
     <div>
       <div>
         <div class="balance">
-          我的PAB货币数
+          我的余额
           <i class="iconfont icon-yue"></i>
-          &nbsp;&nbsp;&nbsp;&nbsp;{{tokenNum}}
+          {{tokenNum}}PAB
         <div>
           <a-button type="primary" :loading="loading" @click="renewBalance">
             更新余额
@@ -244,6 +244,8 @@ export default {
           console.log('11')
           _this.tokenNum = await _this.contract.methods.balanceOf(_this.GLOBAL.etherAddress).call()
           _this.tokenNum = _this.GLOBAL.web3.utils.fromWei(_this.tokenNum, 'shannon')
+          const reg = /^[0-9]+.[0-9]{3}/g
+          _this.tokenNum = _this.tokenNum.match(reg)[0]
           _this.loading = false
         }
       }, 500)
@@ -280,13 +282,13 @@ export default {
     checkAmount: function () {
       this.amountAlertIcon = 'error'
       if (this.form.toAmount === '') {
-        this.amountAlert = '请输入货币数量'
+        this.amountAlert = '请输入货币数'
       } else if (parseFloat(this.form.toAmount) > parseFloat(this.tokenNum)) {
-        this.amountAlert = '货币数量超出余额，请填入合适货币数量'
+        this.amountAlert = '货币数超出余额，请填入合适货币数'
       } else if (parseFloat(this.form.toAmount) === 0) {
-        this.amountAlert = '货币数量为0'
+        this.amountAlert = '货币数为0'
       } else {
-        this.amountAlert = '货币数量正确，发送货币数量过小会取最小值发送'
+        this.amountAlert = '货币数正确，发送货币数过小会取最小值发送'
         this.amountAlertIcon = 'success'
       }
       this.amountAlertShow = true
