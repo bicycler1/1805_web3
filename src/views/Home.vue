@@ -29,7 +29,7 @@
         <div>
           <div>
             <div>
-              请连接MestMask客服端
+              请连接MestMask客户端
             </div>
             <a-button type="primary" icon="retweet" @click="connectMetaMask">
               连接MestMask客户端
@@ -344,7 +344,8 @@ $top_height: 11%;
     }
   &>div:nth-child(2){
     position: relative;
-    width: 30px;
+    font-size: 20px;
+    width: 20px;
     z-index: 11;
     cursor: pointer;
     }

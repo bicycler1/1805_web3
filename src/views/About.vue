@@ -28,6 +28,7 @@
           <a-button type="primary" :loading="loading" @click="renewBalance">
             更新余额
           </a-button>
+          请勿刷新网页，可能导致MetaMask授权中断
         </div>
       </div>
       <div class="form">
@@ -137,6 +138,9 @@
   font-weight: bold;
   &>div{
     margin: 9px 0 0 0;
+    font-size: 1rem;
+    color: red;
+    font-weight: normal;
   }
 }
 .form{
@@ -239,7 +243,7 @@ export default {
           clearInterval(timer)
           console.log('11')
           _this.tokenNum = await _this.contract.methods.balanceOf(_this.GLOBAL.etherAddress).call()
-          _this.tokenNum /= 10 ** 9
+          _this.tokenNum = _this.GLOBAL.web3.utils.fromWei(_this.tokenNum, 'shannon')
           _this.loading = false
         }
       }, 500)
@@ -282,7 +286,7 @@ export default {
       } else if (parseFloat(this.form.toAmount) === 0) {
         this.amountAlert = '货币数量为0'
       } else {
-        this.amountAlert = '货币数量正确'
+        this.amountAlert = '货币数量正确，发送货币数量过小会取最小值发送'
         this.amountAlertIcon = 'success'
       }
       this.amountAlertShow = true
