@@ -25,10 +25,13 @@
           <i class="iconfont icon-yue"></i>
           {{tokenNum}}PAB
         <div>
+          <a-button type="primary" @click="showAllBalance">
+            {{showBalance}}
+          </a-button>
           <a-button type="primary" :loading="loading" @click="renewBalance">
             更新余额
           </a-button>
-          请勿刷新网页，可能导致MetaMask授权中断
+          <div>请勿刷新网页，可能导致MetaMask授权中断</div>
         </div>
       </div>
       <div class="form">
@@ -142,6 +145,9 @@
     color: red;
     font-weight: normal;
   }
+  & button{
+    margin-right: 16px;
+  }
 }
 .form{
   margin-top: 26px;
@@ -176,6 +182,9 @@ export default {
     return {
       contract: '',
       tokenNum: '',
+      allTokenNum: '',
+      partTokenNum: '',
+      showBalance: '显示精确余额',
       form: {
         toAddress: '',
         toAmount: ''
@@ -243,9 +252,9 @@ export default {
           clearInterval(timer)
           console.log('11')
           _this.tokenNum = await _this.contract.methods.balanceOf(_this.GLOBAL.etherAddress).call()
-          _this.tokenNum = _this.GLOBAL.web3.utils.fromWei(_this.tokenNum, 'shannon')
+          _this.allTokenNum = _this.GLOBAL.web3.utils.fromWei(_this.tokenNum, 'shannon')
           const reg = /^[0-9]+.[0-9]{3}/g
-          _this.tokenNum = _this.tokenNum.match(reg)[0]
+          _this.partTokenNum = _this.tokenNum = _this.allTokenNum.match(reg)[0]
           _this.loading = false
         }
       }, 500)
@@ -264,11 +273,11 @@ export default {
       } else {
         const index = this.form.toAddress.search(reg)
         if (index === -1) {
-          this.addressAlert = '输入格式正确的以太坊地址\r\n0x开头包含40位的以太坊地址'
+          this.addressAlert = '输入格式正确的以太坊地址，0x开头包含40位的以太坊地址'
         } else {
           const res = this.form.toAddress.match(reg)[0]
           if (!this.GLOBAL.web3.utils.isAddress(res)) {
-            this.addressAlert = '请检查您输入的以太坊地址\r\n0x开头包含40位的以太坊地址'
+            this.addressAlert = '请检查您输入的以太坊地址，0x开头包含40位的以太坊地址'
           } else if (res === this.GLOBAL.etherAddress) {
             this.addressAlert = '请不要给自己转币'
           } else {
@@ -281,15 +290,23 @@ export default {
     },
     checkAmount: function () {
       this.amountAlertIcon = 'error'
+      const reg1 = /[^(0-9.)]/g
+      const reg2 = /^\./g
       if (this.form.toAmount === '') {
-        this.amountAlert = '请输入货币数'
+        this.amountAlert = '请输入正确的货币数'
       } else if (parseFloat(this.form.toAmount) > parseFloat(this.tokenNum)) {
         this.amountAlert = '货币数超出余额，请填入合适货币数'
       } else if (parseFloat(this.form.toAmount) === 0) {
         this.amountAlert = '货币数为0'
       } else {
-        this.amountAlert = '货币数正确，发送货币数过小会取最小值发送'
         this.amountAlertIcon = 'success'
+        this.amountAlert = '货币数正确，发送货币数过小会取最小值发送'
+        const index1 = this.form.toAmount.search(reg1)
+        const index2 = this.form.toAmount.search(reg2)
+        if (index1 !== -1 || index2 !== -1) {
+          this.amountAlert = '请输入正确的货币数'
+          this.amountAlertIcon = 'error'
+        }
       }
       this.amountAlertShow = true
     },
@@ -353,6 +370,18 @@ export default {
     renewBalance: function () {
       this.loading = true
       this.initBalance()
+    },
+    showAllBalance () {
+      switch (this.showBalance) {
+        case '显示精确余额':
+          this.tokenNum = this.allTokenNum
+          this.showBalance = '显示粗略余额'
+          break
+        case '显示粗略余额':
+          this.tokenNum = this.partTokenNum
+          this.showBalance = '显示精确余额'
+          break
+      }
     }
   },
   mounted () {

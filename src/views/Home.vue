@@ -444,7 +444,7 @@ export default {
     },
     async connectMetaMask () {
       if (window.ethereum) {
-        this.loginText = '正在获取MetaMask授权，请点击连接'
+        this.loginText = '正在获取MetaMask授权，请点击连接，若长时间没反应，请刷新页面重试'
         this.loginTextType = 'info'
         this.loginTextShow = true
         try {
